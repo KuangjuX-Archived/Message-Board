@@ -41,10 +41,8 @@ function CheckNickname(){
     }
 }
 
-function RemoveMessage(id){
 
-}
 
 setInterval(CheckPassword,1000);
 setInterval(CheckEmail,1000);
-setInterval(CheckEmail,1000);
+setInterval(CheckNickname,1000);

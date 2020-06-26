@@ -36,6 +36,19 @@ function FetchComment($mysql,$num){
     $result=$statement->fetchAll();
     return $result;
 }
+
+function FetchImageURL($mysql,$user_id){
+    $sql="SELECT avatar FROM user WHERE id=?";
+    $statement=$mysql->prepare($sql);
+    $statement->bindParam(1,$user_id);
+    $statement->execute();
+    $result=$statement->fetchAll()[0]["avatar"];
+    if($result){
+        echo $result;
+    }else{
+        echo "";
+    }
+}
 $mysql=Connect();
 $num=GetMaxID($mysql);
 ?>
@@ -48,21 +61,35 @@ $num=GetMaxID($mysql);
     <title></title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <link rel="stylesheet" href="../css/main.css">
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+    <style>
+        img.avatar{
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+        }
+    </style>
 </head>
 <body>
-<div class="lampshade" id="lampshade"></div>
 <div class="comment" id="comment">
-    <div class="header">
-        <div class="fork" onclick="fade()"></div>
+    <div class="card">
+        <form action="SendComment.php" method="post">
+            <h2 class="card-header">
+                评论
+                <div class="fork" onclick="fade()"></div>
+            </h2>
+            <div class="card-body">
+                <div class="form-group">
+                    <label for="message_id">留言ID</label>
+                    <input type="number" class="form-control" id="message_id" name="message_id" required readonly>
+                </div>
+                <div class="form-group">
+                    <label for="comment_message">评论</label>
+                    <textarea class="form-control" id="comment_message"  name="comment_message" rows="5"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">提交</button>
+            </div>
+        </form>
     </div>
-    <form method="post" action="SendComment.php">
-        <p class="innerBox"><strong>留言ID:</strong>&emsp;&emsp;<input class="block" type="text" id="message_id" name="message_id"></p>
-        <p class="innerBox AddHeight"><strong class="float">评论：</strong>&emsp;&emsp;<textarea class="comment" id="comment" name="comment" rows="5" ></textarea> </p>
-        <p class="center"><input type="submit" value="评论"></p>
-    </form>
 </div>
 <h1 style="text-align: center">评论</h1>
 <div class="container" id="container">
@@ -83,15 +110,17 @@ $num=GetMaxID($mysql);
                     $comment=array();
                     if(!empty(FetchMessage($mysql,$i))){
                         $result=FetchMessage($mysql,$i)[0];
+                        $message_user_id=$result["user_id"];
                         $comment=FetchComment($mysql,$i);
                         echo "<div class='card'>";
                         echo "<div class='card-body'>";
-                        echo "<h2 class='card-title'>"."<strong>留言者：&emsp;</strong>".$result["nickname"]."</h2>";
-                        echo "<h3 class='card-title'>"."<strong>主题：&emsp;</strong>".$result["topic"]."</h3>";
+                        echo "<h2 class='card-title' style='text-align: center'>".$result["topic"]."</h2>";
+                        echo "<h4 class='card-title'>" ?><img src="<?php FetchImageURL($mysql,$message_user_id); ?>" class="avatar"> <?php echo $result["nickname"]."</h2>";
                         echo "<p class='card-text'>".$result["message"]."</p>";
                         for($j=0;$j<count($comment);$j++){
+                            $comment_user_id=intval($comment[$j]["user_id"]);
                             echo "<div class='card-header'>";
-                            echo  "<h5 class='card-text>'"."<strong>评论者:&emsp;</strong>".$comment[$j]["nickname"];
+                            echo "<h5 class='card-title>'" ?> <img src="<?php FetchImageURL($mysql,$comment_user_id); ?>" class="avatar"><?php echo $comment[$j]["nickname"]."</h5>";
                             echo "<p class='card-text'>".$comment[$j]["comment"]."</p>";
                             echo "</div>";
                             echo "</br>";
@@ -111,5 +140,8 @@ $num=GetMaxID($mysql);
 
 </div>
 <script src="../js/script.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
 </body>
 </html>

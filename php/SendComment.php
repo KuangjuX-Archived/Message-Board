@@ -43,7 +43,7 @@ function SendComment($nickname,$user_id,$to_message_id,$comment,$mysql){
 }
 
 $to_message_id=$_POST["message_id"];
-$comment=$_POST["comment"];
+$comment=$_POST["comment_message"];
 $nickname=$_SESSION["nickname"];
 $user_id=$_SESSION["user_id"];
 $mysql=Connect();

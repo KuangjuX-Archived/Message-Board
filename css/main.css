@@ -40,7 +40,7 @@ p.center{
 span.corner{
     margin-right: 0;
 }
-input[type="text"]{
+input[type="text"],input[type="password"]{
     width: 200px;
     height: 30px;
     border-radius: 5%;
@@ -83,7 +83,7 @@ div.comment{
     display: none;
     margin-left: 30%;
     margin-top: 8%;
-    border: black 3px solid;
+    /*border: black 3px solid;*/
     border-radius: 7%;
 
 }

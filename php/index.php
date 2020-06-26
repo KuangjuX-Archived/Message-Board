@@ -140,6 +140,7 @@ $result=FetchMessage($user_id,$mysql);
                                     $url=$statement1->fetchAll()[0]["avatar"];
                                     echo $url;
                                 }else{
+                                    $url="../avatar/default.jpg";
                                     echo "";
                                 }
                                 ?> " class="avatar"></strong>
@@ -283,7 +284,6 @@ let lampshade=document.getElementById("lampshade");
 let LBox=document.getElementById("LBox");
 function Lampshade() {
     container.style.filter = "blur(5px)";
-    /*lampshade.style.display = "block";*/
     LBox.style.display = "block";
 
 }
@@ -293,7 +293,6 @@ function disappear() {
     LBox.style.display="none";
 }
 
-function handler(event) {  event.preventDefault();}
 
 </script>
 

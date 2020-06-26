@@ -47,7 +47,7 @@ $check=Check($_POST["username"],$mysql);
 
 //$flag=Register($_POST["username"],$_POST["password"],$mysql);
 if($check){
-    $flag=Register($_POST["username"],$_POST["password"],$mysql);
+    $flag=Register($_POST["username"],md5($_POST["password"]),$mysql);
 }else{
     $flag=0;
     echo "<script>alert(`用户名已存在`)</script>";

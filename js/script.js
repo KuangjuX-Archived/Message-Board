@@ -6,8 +6,6 @@ function change(url="#") {
 }
 
 function comment(id) {
-    let lampshade=document.getElementById("lampshade");
-    lampshade.style.display="block";
     let comment=document.getElementById("comment");
     comment.style.display="block";
     let container=document.getElementById("container");
@@ -18,8 +16,6 @@ function comment(id) {
 }
 
 function fade() {
-    let lampshade = document.getElementById("lampshade");
-    lampshade.style.display = "none";
     let comment = document.getElementById("comment");
     comment.style.display = "none";
     let container = document.getElementById("container");

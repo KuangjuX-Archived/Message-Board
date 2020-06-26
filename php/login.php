@@ -7,6 +7,7 @@
 
         try{
             $conn = new PDO($DSN,$USER_NAME,$PASSWORD);
+            $conn->query("set names utf8");
             return $conn;
         }catch (PDOException $e) {
             echo $e->getMessage();
@@ -18,7 +19,7 @@
         $statement->execute();
         $content=$statement->fetchAll();
         for($i=0;$i<count($content);$i++){
-            if($username==$content[$i]["username"]&&$password==$content[$i]["password"]){
+            if($username==$content[$i]["username"]&&md5($password)==$content[$i]["password"]){
                 $_SESSION["username"]=$username;
                 $_SESSION["nickname"]=$content[$i]["nickname"];
                 $_SESSION["email"]=$content[$i]["email"];
@@ -34,7 +35,7 @@
     $flag=VerifyPassword($_POST["username"],$_POST["password"],$mysql);
 
     if($flag){
-        echo "<script>alert(`登陆成功`)</script>";
+        echo "<script>alert(`登录成功`)</script>";
         echo "<script>setTimeout(function () {
         window.location.href=`index.php`;},500);</script>";
     }else{

@@ -48,7 +48,7 @@ function ChangePassword($ConfirmPassword,$user_id,$mysql){
 
 $new_password=$_POST["new_password"];
 $ConfirmPassword=$_POST["ConfirmPassword"];
-$id=$_SESSION["user_id"];
+$user_id=$_SESSION["user_id"];
 
 if(Judge()){
     if(ConfirmPassword($new_password,$ConfirmPassword)){
